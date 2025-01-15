@@ -144,6 +144,21 @@ vardef hollowstroke (expr p, wd_out, wd_in) =
 enddef;
 
 
+%--- COMMON TRANSFORMATIONS ---
+
+%--- flip_horiz(p) ---
+% Return p reflected about the vertical axis
+def flip_horiz (expr p) =
+    p reflectedabout (up, down)
+enddef;
+
+%--- flip_vert(p) ---
+% Return p reflected about the horizontal axis
+def flip_vert (expr p) =
+    p reflectedabout (left, right)
+enddef;
+
+
 %----- PATH BUILDING -----
 
 %--- join_pts_dirs (Pt, Din, Dout) ---
@@ -171,10 +186,10 @@ vardef join_pts_dirs (suffix Pt, Din, Dout) =
    endfor
 enddef;
 
-%--- join_pts_dirs_cycle (Pt, Din, Dout) ---
+%--- cycle_pts_dirs (Pt, Din, Dout) ---
 % Same as join_pts_dirs except it returns a cycle (honoring the in-direction
 % at the first point if defined).
-vardef join_pts_dirs_cycle (suffix Pt, Din, Dout) =
+vardef cycle_pts_dirs (suffix Pt, Din, Dout) =
     join_pts_dirs(Pt, Din, Dout)
     ..
     if known(Din[0]): {Din[0]} fi
