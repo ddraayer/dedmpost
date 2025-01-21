@@ -72,21 +72,6 @@ def origin_at_LR (expr p) =
 enddef;
 
 
-%--- arcpoint L of P ---
-% Return the point on path P that lies length L (in the sense
-% of arclength) along P from its starting point
-def arcpoint expr L of P =
-    point (arctime L of P) of P
-enddef;
-
-%--- relarcpoint r of P ---
-% Return the point on path P that lies the fraction r of the total
-% length P from its starting point
-def relarcpoint expr r of P =
-    point (arctime (r*(arclength P)) of P) of P
-enddef;
-
-
 %----- NOTION OF PAGE/CANVAS -----
 % Use pgwd and pght to set the size of your design canvas. Often these are set
 % to the size of the desired printed page (typically when printing figures that
@@ -108,6 +93,33 @@ def center_fig_on_page =
 enddef;
 
 
+%----- CONVENIENT PATHS -----
+% Paths `u<shape>` are "unit" paths of the indicated shape; i.e., they have
+% bounding box with dimensions 1x1 with origin at the bounding box center.
+
+path usquare, ucircle, udiamond;
+usquare = origin_at_center(unitsquare);
+ucircle = fullcircle;
+udiamond = (right--up--left--down--cycle) scaled 1/2;
+
+
+%----- ARCPOINT MACROS -----
+
+%--- arcpoint L of P ---
+% Return the point on path P that lies length L (in the sense
+% of arclength) along P from its starting point
+def arcpoint expr L of P =
+    point (arctime L of P) of P
+enddef;
+
+%--- relarcpoint r of P ---
+% Return the point on path P that lies the fraction r of the total
+% length P from its starting point
+def relarcpoint expr r of P =
+    point (arctime (r*(arclength P)) of P) of P
+enddef;
+
+
 %----- FILL & STROKE MACROS -----
 % One very common drawing operation is to fill a closed path with one color
 % and at the same time stroke the path with a different color. In plain
@@ -117,7 +129,7 @@ enddef;
 % Basically this involves drawing the path twice: first wider with the outer
 % "stroke" color, and then again with narrower "fill" color.
 
-% Variables for fill/stroke macros
+% "Public" variables for fill/stroke macros
 color fillcolor, strokecolor;
 pen strokepen;
 numeric strokewidth;
@@ -165,7 +177,7 @@ enddef;
 % Return a path constructed from the sequence of points Pt[i] for i=0,1,...n-1
 % with in-directions Din[i] and out-directions Dout[i]. Here n is the number of
 % points (n is the smallest nonnegative integer such that P[n] is undefined).
-% Directions may be defined or omitted at will. (
+% Directions need not be specified at every (or even any) point.
 vardef join_pts_dirs (suffix Pt, Din, Dout) =
     save n, i;
 
