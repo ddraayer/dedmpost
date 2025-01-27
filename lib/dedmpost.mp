@@ -121,13 +121,15 @@ enddef;
 
 
 %----- FILL & STROKE MACROS -----
-% One very common drawing operation is to fill a closed path with one color
-% and at the same time stroke the path with a different color. In plain
-% MetaPost this must be done in two steps.
+% One very common drawing operation is to fill a closed path with one color and
+% at the same time stroke the path with a different color. In plain MetaPost
+% this must be done in two steps. The fillstroke macro conveniently takes care
+% of doing both of these in one call.
 %
 % Another situation is drawing a path and its "spine" or a "hollowed out" path.
 % Basically this involves drawing the path twice: first wider with the outer
-% "stroke" color, and then again with narrower "fill" color.
+% "stroke" color, and then again with narrower "fill" color. That's what
+% hollowstroke does.
 
 % "Public" variables for fill/stroke macros
 color fillcolor, strokecolor;
@@ -172,39 +174,47 @@ enddef;
 
 
 %----- PATH BUILDING -----
+newinternal numeric join_pts_start_at;
+join_pts_start_at := 0;
 
 %--- join_pts_dirs (Pt, Din, Dout) ---
-% Return a path constructed from the sequence of points Pt[i] for i=0,1,...n-1
-% with in-directions Din[i] and out-directions Dout[i]. Here n is the number of
-% points (n is the smallest nonnegative integer such that P[n] is undefined).
-% Directions need not be specified at every (or even any) point.
+% Return a path constructed from the sequence of points Pt[i] for
+% i=s,s+1,...,e with in-direction Din[i] and out-direction Dout[i] at Pt[i].
+% Here s=join_pts_start_at and e is the smallest integer (>=s-1) such that
+% P[e+1] is undefined. Directions need not be defined at every (or even any)
+% point.
 vardef join_pts_dirs (suffix Pt, Din, Dout) =
-    save n, i;
+    save s, e, i;
 
-    % Determine Pt index range (0,1,...,n-1)
-    n := 0;
+    % Determine Pt index range (s,s+1,...,e)
+    s := join_pts_start_at;
+    e := s;
     forever:
-        exitif unknown(Pt[n]);
-        n := n + 1;
+        exitif unknown(Pt[e]);
+        e := e + 1;
     endfor;
+    e := e - 1;
 
-   Pt[0]
-   if known(Dout[0]): {Dout[0]} fi
-   for i = 1 upto n-1:
+    % Special treatment for 1st pt since paths can't start with an in-direction
+    if known(Pt[s]):
+        Pt[s]
+        if known(Dout[s]): {Dout[s]} fi
+    fi
+    for i = s+1 upto e:
        ..
        if known(Din[i]): {Din[i]} fi
        Pt[i]
        if known(Dout[i]): {Dout[i]} fi
-   endfor
+    endfor
 enddef;
 
 %--- cycle_pts_dirs (Pt, Din, Dout) ---
-% Same as join_pts_dirs except it returns a cycle (honoring the in-direction
-% at the first point if defined).
+% Same as join_pts_dirs except it returns a cycle, honoring the in-direction
+% at the first point if defined.
 vardef cycle_pts_dirs (suffix Pt, Din, Dout) =
     join_pts_dirs(Pt, Din, Dout)
     ..
-    if known(Din[0]): {Din[0]} fi
+    if known(Din[join_pts_start_at]): {Din[join_pts_start_at]} fi
     cycle
 enddef;
 
