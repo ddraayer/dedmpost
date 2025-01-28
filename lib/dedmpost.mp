@@ -139,10 +139,10 @@ strokecolor := black;
 strokepen := pencircle;
 strokewidth := 1pt;
 
-%--- fillstroke(p) ---
+%--- fillstroke p ---
 % Fills path p with fillcolor and strokes it with strokecolor using
 % strokepen of width strokewidth.
-vardef fillstroke (expr p) =
+vardef fillstroke expr p =
     fill p withcolor fillcolor;
     draw p withpen strokepen scaled strokewidth withcolor strokecolor;
 enddef;
@@ -158,15 +158,15 @@ enddef;
 
 %--- COMMON TRANSFORMATIONS ---
 
-%--- flip_horiz(p) ---
+%--- flip_horiz p ---
 % Return p reflected about the vertical axis
-def flip_horiz (expr p) =
+def flip_horiz expr p =
     p reflectedabout (up, down)
 enddef;
 
-%--- flip_vert(p) ---
+%--- flip_vert p ---
 % Return p reflected about the horizontal axis
-def flip_vert (expr p) =
+def flip_vert expr p =
     p reflectedabout (left, right)
 enddef;
 
