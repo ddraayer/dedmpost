@@ -1,3 +1,4 @@
+# Ignore TeX detritus
 *.aux
 *.dvi
 *.fls
@@ -8,3 +9,7 @@
 *.[0-9][0-9]
 *.[0-9][0-9][0-9]
 *.mps
+
+# Ignore pdf files by default
+*.pdf
+
