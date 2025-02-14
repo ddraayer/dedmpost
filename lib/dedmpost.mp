@@ -221,9 +221,66 @@ vardef cycle_pts_dirs (suffix Pt, Din, Dout) =
     cycle
 enddef;
 
+%--- polysegmented (p,n) ---
+% Return the polygonal path/cycle obtained by connecting the points on
+% path/cycle p that divide p into n equal-arclength segments.
+% Note: This provides a convenient way to access a sequence of equally spaced
+% points along a path. They are accessible at the integer parameter values of
+% the polysegment path q, i.e., `point t of q` for t=0,1,...,length(q).
+vardef polysegmented (expr p, n) =
+    save i,s;
+    numeric i,s;
+
+    % s is the length of each segment
+    n*s = arclength p;
+
+    for i = 0 upto n-1:
+        arcpoint i*s of p --
+    endfor
+    if cycle(p): cycle else: point infinity of p fi
+enddef;
+
 stop_unless_jobname_is("dedmpost");
 
 
-%----- ADD SOME SAMPLE FIGURES HERE -----
+%----- SAMPLE FIGURES HERE -----
+
+% A simple polysegmented path
+nextfig;
+    numeric i;
+    path p,q;
+    p = ((-1,0){left}..(-1,2){right}..(0,0)..
+         {right}(1,-1)..{up}(2,0)..(1,0)) scaled 1cm;
+    q = polysegmented(p, 12);
+    draw p withpen pencircle scaled 1pt;
+    draw q withpen pencircle scaled .7pt withcolor red;
+    for i = 0 upto length q:
+        draw point i of q withpen pencircle scaled 2.5pt withcolor red;
+    endfor;
+endfig;
+
+% Using polysegmented to draw an oval with "spokes" emanating from a point
+nextfig;
+    numeric i,N;
+    pair C;
+    path p,q;
+
+    N = 16;
+    C = (-1cm, -.5cm);
+    p = ucircle xscaled 6cm yscaled 3cm;
+    q = polysegmented(p, N);
+    draw p withpen pencircle scaled 1pt;
+    pickup pencircle scaled .5pt;
+
+    % Dashed spokes interpolating along the path's "time" parameter interval
+    for i = 0 upto N-1:
+        draw C -- (point i*(length(p)/N) of p) withcolor .8white dashed evenly;
+    endfor;
+
+    % Solid spokes using the evenly spaced vertices of the polysegment
+    for i = 0 upto (length q) - 1:
+        draw C -- point i of q;
+    endfor;
+endfig;
 
 end.
