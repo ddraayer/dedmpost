@@ -13,3 +13,5 @@
 # Ignore pdf files by default
 *.pdf
 
+# A general place to throw stuff where git doesn't worry about it
+junkdrawer/

@@ -18,17 +18,18 @@ message "Loading dedmpost.mp v" & _dedmpost_version;
 % jobname, then stop inputting this file at this point.
 % XXX -This is just an aspiration. I'm not aware of any way to determine the
 % current input file's basename. I'm keeping this here in the hope that some day
-% this will be possible. In the meantime there's stop_unless_jobname_is(s).
+% someone will tell me how to fill in CURRENT_INPUT_FILE_BASENAME. In the
+% meantime one can get by with stop_unless_jobname_is.
 %def stop_if_imported =
 %   if jobname <> CURRENT_INPUT_FILE_BASENAME: endinput fi;
 %enddef;
 
 %--- stop_unless_jobname_is(s) ---
-% If the jobname (by default the basename of the top-level file being processed)
-% is not s, then stop inputting the file right now. This allows a .mp file
-% that is meant to be input (a "library" file) to do extra things (such as
-% generate its own figures) when processed directly but behave properly when
-% input by another file.
+% If the jobname is not s, then stop inputting the file right now.
+% (By default jobname is the basename of the top-level file being processed.)
+% This allows a .mp file that is intended as a "macro package" to do extra
+% things (such as generate its own figures) when processed directly yet behave
+% properly when input by another file.
 def stop_unless_jobname_is (expr s) =
    if jobname <> s: endinput fi;
 enddef;
@@ -73,23 +74,25 @@ enddef;
 
 
 %----- NOTION OF PAGE/CANVAS -----
-% Use pgwd and pght to set the size of your design canvas. Often these are set
-% to the size of the desired printed page (typically when printing figures that
-% fit entirely on a single printed page). But they can be ajdusted to suit the
-% "canvas" that is most appropriate for your project (they are intended for
-% design purposes only and do not have any special connection to printer pages).
+% Use page_width and page_height to set the size of your design canvas. Often
+% these are set to the size of the desired printed page (typically when printing
+% figures that fit entirely on a single printed page). But they can be ajdusted
+% to suit the "canvas" that is most appropriate for your project (they are
+% intended for design purposes only and do not have any special connection to
+% printer pages).
 
-pgwd := 8.5in;
-pght := 11in;
+page_width := 8.5in;
+page_height := 11in;
 
 % Shift currentpicture so that its origin lies at the center of the page
 def shift_fig_to_page_center =
-    currentpicture := currentpicture shifted (pgwd/2,pght/2);
+    currentpicture := currentpicture shifted (page_width/2,page_height/2);
 enddef;
 
-% Shift currentpicture so that its bounding box center lies at the page center.
+% Shift currentpicture so that its bounding box center lies at the page center
 def center_fig_on_page =
-    currentpicture := origin_at_center(currentpicture) shifted (pgwd/2,pght/2);
+    currentpicture :=
+        origin_at_center(currentpicture) shifted (page_width/2,page_height/2);
 enddef;
 
 
