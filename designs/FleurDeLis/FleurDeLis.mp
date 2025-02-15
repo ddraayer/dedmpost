@@ -1,7 +1,6 @@
 %!TEX TS-program = nv-metapost
 %--------------------------------------------------------------
-% fleur_de_lis.mp
-%   (from the original written on 2011-Jan-28)
+% FleurDeLis.mp (from 2011-Jan-28)
 % Copyright (c) 2025 Dean E. Draayer
 %--------------------------------------------------------------
 input dedjobdefaults;
