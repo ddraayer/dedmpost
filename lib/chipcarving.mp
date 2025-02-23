@@ -67,6 +67,33 @@ vardef segmented_oval (expr w, h, n) =
     )
 enddef;
 
+
+%----- Ramps -----
+% rampslopecoef is a factor that adjusts the direction at which the inclined
+% side of a ramp meets the vertices. A value of 1 gives a straight-line incline;
+% a value of 0 bends the incline to approach tangentially.
+newinternal numeric rampslopecoef;
+rampslopecoef:=1;
+
+%--- ramp(w,h) ---
+% Return a cycle for a ramp of width w and height h.
+% The vertices are (0,0), (w,0), (0,h).
+vardef ramp (expr w,h) =
+    (0,0) --
+    (w,0){(-w,h*rampslopecoef)} ...
+    {(-w*rampslopecoef,h)}(0,h) --
+    cycle
+enddef;
+
+%--- doubleramp(w,h) ---
+% Return a cycle for back-to-back ramps of overall width w and height h
+% The vertices are (0,0), (w/2,0), (0,h), (-w/2,0).
+vardef doubleramp (expr w,h) =
+    save p; path p;
+    p = ramp(.5w,h);
+    p--(flip_horiz p)--cycle
+enddef;
+
 stop_unless_jobname_is("chipcarving");
 
 
@@ -90,6 +117,18 @@ endfig;
 % A segmented oval
 nextfig;
     draw segmented_oval(5in, 2in, 24);
+endfig;
+
+% Ramps & double ramps
+nextfig;
+    numeric i, rsc;
+    i:=0;
+    for rsc = 1.5, 1.0, 0.5, 0.25, 0.0:
+        interim rampslopecoef:=rsc;
+        draw ramp(3cm, 1cm) shifted (7cm*left) shifted (1.5i*cm*down);
+        draw doubleramp(6cm, 1cm) shifted (1.5i*cm*down);
+        i:=i+1;
+    endfor;
 endfig;
 
 end.
