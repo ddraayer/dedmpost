@@ -90,7 +90,7 @@ enddef;
 % The vertices are (0,0), (w/2,0), (0,h), (-w/2,0).
 vardef doubleramp (expr w,h) =
     save p; path p;
-    p = ramp(.5w,h);
+    p = ramp(w/2,h);
     p--(flip_horiz p)--cycle
 enddef;
 
