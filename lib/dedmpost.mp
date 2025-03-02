@@ -122,6 +122,25 @@ def relarcpoint expr r of P =
     point (arctime (r*(arclength P)) of P) of P
 enddef;
 
+%--- polysegmented (p,n) ---
+% Return the polygonal path/cycle obtained by connecting the points on
+% path/cycle p that divide p into n equal-arclength segments.
+% Note: This provides a convenient way to access a sequence of equally spaced
+% points along a path. They are accessible at the integer parameter values of
+% the polysegment path q, i.e., `point t of q` for t=0,1,...,length(q).
+vardef polysegmented (expr p, n) =
+    save i,s;
+    numeric i,s;
+
+    % s is the length of each segment
+    n*s = arclength p;
+
+    for i = 0 upto n-1:
+        arcpoint i*s of p --
+    endfor
+    if cycle(p): cycle else: point infinity of p fi
+enddef;
+
 
 %----- FILL & STROKE MACROS -----
 % One very common drawing operation is to fill a closed path with one color and
@@ -221,23 +240,40 @@ vardef cycle_pts_dirs (suffix Pt, Din, Dout) =
     cycle
 enddef;
 
-%--- polysegmented (p,n) ---
-% Return the polygonal path/cycle obtained by connecting the points on
-% path/cycle p that divide p into n equal-arclength segments.
-% Note: This provides a convenient way to access a sequence of equally spaced
-% points along a path. They are accessible at the integer parameter values of
-% the polysegment path q, i.e., `point t of q` for t=0,1,...,length(q).
-vardef polysegmented (expr p, n) =
-    save i,s;
-    numeric i,s;
 
-    % s is the length of each segment
-    n*s = arclength p;
+%----- TILE REPLICATION -----
 
-    for i = 0 upto n-1:
-        arcpoint i*s of p --
-    endfor
-    if cycle(p): cycle else: point infinity of p fi
+%--- tiling_MxN (tile, M, N) ---
+% Return a picture obtained by drawing an M-rows-by-N-columns rectangular array
+% of copies of tile (the original tile appears at the lower left).
+vardef tiling_MxN(expr tile, M, N) =
+    save w,h;
+    numeric w,h;
+    (w, h) = urcorner tile - llcorner tile;
+    image(
+        for i = 0 upto N-1:
+            for j = 0 upto M-1:
+                draw tile shifted (i*w, j*h);
+            endfor;
+        endfor;
+    )
+enddef;
+
+
+%--- shifted_replicas (tile, reps, displ) ---
+% Parameters:
+%   tile  - a picture
+%   reps  - a numeric
+%   displ - a pair/vector
+% Return a picture consisting of reps copies of tile,
+% with displ as the displacement between consecutive tiles.
+vardef shifted_replicas (expr tile, reps, displ) =
+    save i; numeric i;
+    image (
+        for i = 0 upto reps-1:
+            draw tile shifted (i*displ);
+        endfor;
+    )
 enddef;
 
 stop_unless_jobname_is("dedmpost");
@@ -281,6 +317,20 @@ nextfig;
     for i = 0 upto (length q) - 1:
         draw C -- point i of q;
     endfor;
+endfig;
+
+% A simple MxN tiling example
+nextfig;
+    picture tile;
+    tile = image(filldraw udiamond xscaled .8cm yscaled 1cm withcolor .5white);
+    draw tiling_MxN(tile, 3, 7);
+endfig;
+
+% Replicate tiles along one direction
+nextfig;
+    picture tile;
+    tile = image(filldraw udiamond xscaled 1cm yscaled 1cm withcolor .5white);
+    draw shifted_replicas(tile, 10, (.7cm,.4cm));
 endfig;
 
 end.
