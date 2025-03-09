@@ -276,6 +276,26 @@ vardef shifted_replicas (expr tile, reps, displ) =
     )
 enddef;
 
+%--- transformed_replicas (tile, n, tr) ---
+% Parameters:
+%   tile - a picture
+%   n    - a numeric
+%   tr   - a transformation
+% Return a picture consisting of n copies of tile, applying tr to the latest
+% replica to generate the next one.
+vardef transformed_replicas (expr tile, n, tr) =
+    save i, pic;
+    numeric i;
+    picture pic;
+    image (
+        pic := tile;
+        for i = 1 upto n:
+            draw pic;
+            pic := pic transformed tr;
+        endfor;
+    )
+enddef;
+
 stop_unless_jobname_is("dedmpost");
 
 
@@ -331,6 +351,18 @@ nextfig;
     picture tile;
     tile = image(filldraw udiamond xscaled 1cm yscaled 1cm withcolor .5white);
     draw shifted_replicas(tile, 10, (.7cm,.4cm));
+endfig;
+
+% Example of transformed_replicas
+nextfig;
+    picture tile;
+    transform tr;
+    
+    tile = image(
+        fillstroke udiamond xscaled 1cm yscaled 1cm shifted (2cm*right);
+    );
+    tr = identity xscaled .95 yscaled .95 rotated 10;
+    draw transformed_replicas(tile, 35, tr);
 endfig;
 
 end.
