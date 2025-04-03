@@ -53,7 +53,7 @@ seg[18] = (-5,-3){SE} .. {NE}(-3,-3) -- (-1,-1);
 
 
 %-- Just the knot's medial axis and the grid points --
-nextfig;
+taggedfig("AxisGrid");
     numeric u;
     u = 1cm;
 
@@ -72,7 +72,7 @@ endfig;
 
 
 %-- Eternal knot rendered within an oval frame --
-nextfig;
+taggedfig("OvalFrame");
     numeric u, W, H, bw, ew, m, pad;
 
     m = 5mm;            % frame width ("margin")
@@ -100,7 +100,7 @@ endfig;
 
 
 %-- Eternal knot rendered within a diamond frame --
-nextfig;
+taggedfig("DiamondFrame");
     numeric u, W, H, bw, ew, m, pad;
 
     m = 5mm;            % frame rail width ("margin")

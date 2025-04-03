@@ -9,7 +9,7 @@
 % Quick out if file has already been input
 if known _dedmpost_version: endinput fi;
 string _dedmpost_version;
-_dedmpost_version = "0.8";
+_dedmpost_version = "0.81";
 message "Loading dedmpost.mp v" & _dedmpost_version;
 
 
@@ -35,15 +35,28 @@ def stop_unless_jobname_is (expr s) =
 enddef;
 
 
-%----- AUTOMATIC FIGURE NUMBERING -----
+%----- FIGURE NUMBERING/TAGGING -----
 % Use `nextfig` instead of `beginfig(n)` to automatically get figures numbered
-% consecutively starting from 1.
-
+% consecutively starting from 1. Escape sequence %c (or %{charcode}) in the
+% outputtemplate will be replaced by the value of `fignum`.
+newinternal numeric fignum;
 fignum := 0;
 
 def nextfig =
     fignum := fignum + 1;
     beginfig(fignum);
+enddef;
+
+% Use `taggedfig(tag)` to supply a string `tag` to incorporate into the output
+% filename wherever `%{figtag}` appears in `outputtemplate`.
+% NB: taggedfig calls nextfig, so fignum gets incremented at each call.
+% NB: The outputtemplate mechanism requires figtag to be declared as internal.
+newinternal string figtag;
+figtag := "Fig";
+
+vardef taggedfig (expr tag) =
+    interim figtag := tag;
+    nextfig;
 enddef;
 
 
@@ -289,10 +302,13 @@ enddef;
 stop_unless_jobname_is("dedmpost");
 
 
+
 %----- SAMPLE FIGURES HERE -----
 
+input dedjobdefaults;
+
 % A simple polysegmented path
-nextfig;
+taggedfig("PolysegmentedPath");
     numeric i;
     path p,q;
     p = ((-1,0){left}..(-1,2){right}..(0,0)..
@@ -306,7 +322,7 @@ nextfig;
 endfig;
 
 % Using polysegmented to draw an oval with "spokes" emanating from a point
-nextfig;
+taggedfig("OvalWithSpokes");
     numeric i,N;
     pair C;
     path p,q;
@@ -329,25 +345,29 @@ nextfig;
     endfor;
 endfig;
 
+% TODO: join_pts_dirs & hollowstroke example
+
+% TODO: cycle_pts_dirs & fillstroke example
+
 % A simple MxN tiling example
-nextfig;
+taggedfig("Tiling2D");
     picture tile;
     tile = image(filldraw udiamond xscaled .8cm yscaled 1cm withcolor .5white);
     draw tiling_MxN(tile, 3, 7);
 endfig;
 
 % Replicate tiles along one direction
-nextfig;
+taggedfig("ShiftedReplicas");
     picture tile;
     tile = image(draw udiamond xscaled 1.5cm yscaled 2cm);
     draw shifted_replicas(tile, 10, (.8cm,.2cm));
 endfig;
 
 % Example of transformed_replicas
-nextfig;
+taggedfig("TransformedReplicas");
     picture tile;
     transform tr;
-    
+
     tile = image(
         fillstroke udiamond xscaled 1cm yscaled 1cm shifted (2cm*right);
     );

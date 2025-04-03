@@ -15,8 +15,10 @@ prologues := 3;
 
 %--- outputformat ---
 % Supported values for outputformat: "eps" (default), "png", "svg"
-% If your file set this before inputting this file, the outputtemplate will get
-% adjusted accordingly below (that's why we leave it commented out here).
+% If your file sets this before inputting the current file, the outputtemplate
+% will get adjusted accordingly below. We include it here (with default value
+% "eps") just as a reminder but leave it commented out so we don't actually
+% override it if the user has already set it.
 
 %outputformat := "eps";
 
@@ -24,5 +26,6 @@ prologues := 3;
 %--- outputtemplate ---
 % Set outputtemplate based on outputformat (unless it has already been changed)
 if outputtemplate = "%j.%c":
-    outputtemplate := "%j-%c." & (if outputformat = "eps": "mps" else: outputformat fi);
+    outputtemplate := "%j-%c-%{figtag}." &
+        (if outputformat = "eps": "mps" else: outputformat fi);
 fi
