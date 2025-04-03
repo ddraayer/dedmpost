@@ -68,6 +68,22 @@ taggedfig("AxisGrid");
     % Draw medial axis
     pickup pencircle scaled 1bp;
     draw axis scaled u;
+
+    % Label some points
+    dotlabel.bot("O", origin);
+    dotlabel.top("(0,7)", (0,7u));
+    dotlabel.bot("(0,-7)", (0,-7u));
+    dotlabel.urt("(5,3)", (5u,3u));
+    dotlabel.lrt("(5,-3)", (5u,-3u));
+    dotlabel.ulft("(-5,3)", (-5u,3u));
+    dotlabel.llft("(-5,-3)", (-5u,-3u));
+    % Run numbers along left and bottom sides
+    for i = -7 upto 7:
+        label.lft(decimal(i), (-6u,i*u));
+    endfor;
+    for i = -5 upto 5:
+        label.bot(decimal(i), (i*u,-8u));
+    endfor;
 endfig;
 
 
