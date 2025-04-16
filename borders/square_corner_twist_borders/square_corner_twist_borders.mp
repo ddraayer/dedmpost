@@ -80,13 +80,25 @@ vardef square_corner_twist_border (expr w, h, s, g) =
     p1 & p2 & p3 & p4 -- cycle
 enddef;
 
+%--- rail_horiz(w,h,s,g) ---
+% Return a path for the upper right horizontal half rail
+def rail_horiz (expr w, h, s, g) =
+  (w - (s + g + s), h - s) -- (0, h - s)
+enddef;
+
+%--- rail_vert(w,h,s,g) ---
+% Return a path for the upper right vertical half rail
+def rail_vert (expr w, h, s, g) =
+  (w - s, h - (s + g + s)) -- (w - s, 0)
+enddef;
+
 stop_unless_jobname_is("square_corner_twist_borders");
 
 
 %----- FIGURES BEGIN HERE -----
 
 nextfig;
-    % Draw a full 4-cornered border
+    % Draw a full 4-cornered border (10in x 4in)
     numeric W, H, s, g;
     H := 4in;
     W := 10in;
@@ -98,7 +110,7 @@ nextfig;
 endfig;
 
 nextfig;
-    % Draw four staggered copies of a quarter of a full border
+    % Draw four staggered copies of a quarter border
     numeric W, H, s, g;
     path p;
 
@@ -116,9 +128,31 @@ nextfig;
 endfig;
 
 nextfig;
-    % Draw a framed 4-cornered border approx 11in x 6in with chamfered edge
+    % Draw four staggered copies of a quarter border with rails
+    numeric W, H, s, g;
+    picture p;
+
+    H := 4in;
+    W := 8in;
+    s := 1/4in;
+    g := 3/16in;
+    e := 2mm;
+
+    p = image(
+      drawoptions(withpen pencircle scaled e withcolor .7white);
+      draw square_corner_twist_border_UR(W, H, s, g);
+      draw rail_horiz(W, H, s, g);
+      draw rail_vert(W, H, s, g);
+    );
+    for i = 0 upto 3:
+        draw p shifted (i * (s + 2g, s + 2g));
+    endfor;
+endfig;
+
+nextfig;
+    % Draw a framed 4-cornered border 11.5in x 6in with chamfered edge
     numeric W, H, w, h, c, m, s, g;
-    H := 6in - 1/16in;
+    H := 6in;
     W := 11.5in;
     c := 1/8in;
     m := 3/16in;
@@ -141,7 +175,7 @@ endfig;
 nextfig;
     % Draw a framed 4-cornered border approx 12in x 6in
     numeric W, H, w, h, c, m, s, g;
-    H := 6in - 1/16in;
+    H := 6in;
     W := 11.75in;
     c := 0in;
     m := 1/4in;
@@ -159,10 +193,9 @@ endfig;
 nextfig;
     % Draw a framed 4-cornered border approx 12in x 6in with "rails" inside
     numeric W, H, w, h, c, m, s, g;
-    pair P;
     path p;
     %--- Design parameters ---
-    H := 6in - 1/16in;
+    H := 6in;
     W := 11.75in;
     c := 0in;
     m := 1/4in;
@@ -177,13 +210,13 @@ nextfig;
     draw square_corner_twist_border(w, h, s, g);
     %--- Draw "rails" inside the border ---
     % Vertical rails here
-    P := (w/2 - s, h/2 - (s + g + s));
-    p := (flip_vert P)--P;
+    p := rail_vert(w/2, h/2, s, g);
+    p := p & reverse (flip_vert p);
     draw p;
     draw flip_horiz(p);
     % Horizontal rails here
-    P := (w/2 - (s + g + s), h/2 - s);
-    p := (flip_horiz P)--P;
+    p := rail_horiz(w/2, h/2, s, g);
+    p := p & reverse (flip_horiz p);
     draw p;
     draw flip_vert(p);
 endfig;
