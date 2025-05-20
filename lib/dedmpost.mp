@@ -119,6 +119,21 @@ ucircle = fullcircle;
 udiamond = (right--up--left--down--cycle) scaled 1/2;
 
 
+%----- DIRECTION-RELATED MACROS -----
+
+%--- dir_in t of p ---
+% Return a vector pointing in the direction of entry at point t of p.
+vardef dir_in expr t of p =
+    point t of p - precontrol t of p
+enddef;
+
+%--- dir_out t of p ---
+% Return a vector pointing in the direction of exit at point t of p.
+vardef dir_out expr t of p =
+    postcontrol t of p - point t of p
+enddef;
+
+
 %----- ARCPOINT MACROS -----
 
 %--- arcpoint L of P ---
@@ -342,6 +357,23 @@ taggedfig("OvalWithSpokes");
     % Solid spokes using the evenly spaced vertices of the polysegment
     for i = 0 upto (length q) - 1:
         draw C -- point i of q;
+    endfor;
+endfig;
+
+taggedfig("DirectionsInOut");
+    pair P;
+    path p;
+    numeric u;
+    u := 1cm;
+    p := (0,0){up} .. (3,3) .. (4,2) .. {dir (45+180)}(3,1){right} .. {down}(4,0) -- (2,0){dir -45} .. cycle;
+    p := p xscaled u yscaled u;
+    draw p;
+    pickup pencircle scaled .5bp;
+    for t = 0 step .5 until length(p):
+        P := point t of p;
+        drawarrow (P - dir_in t of p) -- P withcolor red;
+        drawarrow P -- (P + dir_out t of p) withcolor green;
+        drawdot P withpen pencircle scaled (if floor(t) = t: 3bp else: 2bp fi);
     endfor;
 endfig;
 
