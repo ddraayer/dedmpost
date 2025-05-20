@@ -128,25 +128,32 @@ nextfig;
 endfig;
 
 nextfig;
-    % Draw four staggered copies of a quarter border with rails
-    numeric W, H, s, g;
+    % Draw four staggered copies of a quarter border with rails.
+    % Values were chosen to get the overall image close to 10in x 7.5in.
+    % They can be pieced together to get a full border up to 16in x 9in.
+    numeric W, H, s, g, e, st;
     picture p;
 
-    H := 4in;
+    H := 4.5in;
     W := 8in;
     s := 1/4in;
     g := 3/16in;
-    e := 2mm;
+    e := 2mm;   % groove ("etch") width
+    st := 24mm; % stagger step size
 
-    p = image(
+    p := image(
       drawoptions(withpen pencircle scaled e withcolor .7white);
       draw square_corner_twist_border_UR(W, H, s, g);
       draw rail_horiz(W, H, s, g);
       draw rail_vert(W, H, s, g);
     );
-    for i = 0 upto 3:
-        draw p shifted (i * (s + 2g, s + 2g));
-    endfor;
+    p := origin_at_LL(p rotated 180);
+    strokecolor := .7white;
+    fillcolor := white;
+    hollowstroke(p, e, .5bp);
+    hollowstroke(origin_at_LL(flip_horiz p) shifted (st, st), e, .5bp);
+    hollowstroke(origin_at_LL(flip_vert p) shifted (st, 2st), e, .5bp);
+    hollowstroke(origin_at_LL(p rotated 180) shifted (2st, 3st), e, .5bp);
 endfig;
 
 nextfig;
