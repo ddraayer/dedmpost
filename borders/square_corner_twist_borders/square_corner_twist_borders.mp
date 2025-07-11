@@ -110,6 +110,23 @@ nextfig;
 endfig;
 
 nextfig;
+    % Draw a full 4-cornered border for approx 10in x 4in design
+    % with mm as units and 6mm margin
+    numeric W, H, s, g;
+    H := 101mm - 2*7mm;
+    W := 254mm - 2*7mm;
+    s := 7mm;
+    g := 5.5mm;
+    e := 2mm;
+
+    save fillcolor, strokecolor;
+    color fillcolor, strokecolor;
+    fillcolor := white;
+    strokecolor := .7white;
+    hollowstroke(square_corner_twist_border(W, H, s, g), e, .5bp);
+endfig;
+
+nextfig;
     % Draw four staggered copies of a quarter border
     numeric W, H, s, g;
     path p;
@@ -148,8 +165,10 @@ nextfig;
       draw rail_vert(W, H, s, g);
     );
     p := origin_at_LL(p rotated 180);
-    strokecolor := .7white;
+    save fillcolor, strokecolor;
+    color fillcolor, strokecolor;
     fillcolor := white;
+    strokecolor := .7white;
     hollowstroke(p, e, .5bp);
     hollowstroke(origin_at_LL(flip_horiz p) shifted (st, st), e, .5bp);
     hollowstroke(origin_at_LL(flip_vert p) shifted (st, 2st), e, .5bp);
