@@ -269,6 +269,33 @@ vardef cycle_pts_dirs (suffix Pt, Din, Dout) =
 enddef;
 
 
+%----- SHAPES -----
+
+%--- rounded_rect(w,h,r) ---
+% Parameters:
+%   w - width of rectangle
+%   h - height of rectangle
+%   r - radius of corners
+% Returns a rounded rectangle of the indicated dimensions as a cycle.
+vardef rounded_rect (expr w,h,r) =
+    save W,H,K;
+    path W,H,K;
+    K = quartercircle scaled 2r;
+    H = (w/2, -(h/2-r))--(w/2, h/2-r);
+    W = (w/2-r, h/2)--(-(w/2-r), h/2);
+    buildcycle (
+        H,
+        K shifted (w/2-r,h/2-r),
+        W,
+        K rotated 90 shifted (-(w/2-r),h/2-r),
+        H rotated 180,
+        K rotated 180 shifted (-(w/2-r),-(h/2-r)),
+        W rotated 180,
+        K rotated 270 shifted (w/2-r,-(h/2-r))
+    )
+enddef;
+
+
 %----- TILE REPLICATION -----
 
 %--- tiling_MxN (tile, M, N) ---
