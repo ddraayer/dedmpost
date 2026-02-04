@@ -1,7 +1,7 @@
 %------------------------------------------------------------------------------
 % dedmpost.mp
 %   DED's basic MetaPost format
-% Copyright (c) 2025 Dean E. Draayer
+% Copyright (c) 2026 Dean E. Draayer
 %------------------------------------------------------------------------------
 
 %----- PREAMBLE STUFF -----
@@ -171,6 +171,23 @@ enddef;
 
 
 %----- FILL & STROKE MACROS -----
+
+%--- drawfilled(c) p ---
+% Fill contour p with color c, then stroke p with currentpen.
+vardef drawfilled(expr c) expr p =
+    fill p withcolor c;
+    draw p;
+enddef;
+
+%--- drawhollowed(wd_out,wd_in,fillcolor) p ---
+% Draw path p twice, first with currentpen scaled wd_out, then with currentpen
+% scaled wd_in using color fillcolor.
+vardef drawhollowed(expr wd_out, wd_in, fillcolor) expr p =
+    draw p withpen currentpen scaled wd_out;
+    draw p withpen currentpen scaled wd_in withcolor fillcolor;
+enddef;
+
+
 % One very common drawing operation is to fill a closed path with one color and
 % at the same time stroke the path with a different color. In plain MetaPost
 % this must be done in two steps. The fillstroke macro conveniently takes care
