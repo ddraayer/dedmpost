@@ -180,11 +180,11 @@ vardef drawfilled(expr c) expr p =
 enddef;
 
 %--- drawhollowed(wd_out,wd_in,fillcolor) p ---
-% Draw path p twice, first with currentpen scaled wd_out, then with currentpen
+% Draw path p twice, first with pencircle scaled wd_out, then with pencircle
 % scaled wd_in using color fillcolor.
 vardef drawhollowed(expr wd_out, wd_in, fillcolor) expr p =
-    draw p withpen currentpen scaled wd_out;
-    draw p withpen currentpen scaled wd_in withcolor fillcolor;
+    draw p withpen pencircle scaled wd_out;
+    draw p withpen pencircle scaled wd_in withcolor fillcolor;
 enddef;
 
 

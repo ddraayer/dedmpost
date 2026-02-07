@@ -95,6 +95,10 @@ enddef;
 stop_unless_jobname_is("square_corner_twist_borders");
 
 
+color shade;
+shade := .7white;
+
+
 %----- FIGURES BEGIN HERE -----
 
 nextfig;
@@ -105,7 +109,7 @@ nextfig;
     s := 1/4in;
     g := 3/16in;
     e := 2mm;
-    drawoptions(withpen pencircle scaled e withcolor .7white);
+    drawoptions(withpen pencircle scaled e withcolor shade);
     draw square_corner_twist_border(W, H, s, g);
 endfig;
 
@@ -119,11 +123,8 @@ nextfig;
     g := 5.5mm;
     e := 2mm;
 
-    save fillcolor, strokecolor;
-    color fillcolor, strokecolor;
-    fillcolor := white;
-    strokecolor := .7white;
-    hollowstroke(square_corner_twist_border(W, H, s, g), e, .5bp);
+    drawoptions(withcolor shade);
+    drawhollowed(e, .5bp, white) square_corner_twist_border(W, H, s, g);
 endfig;
 
 nextfig;
@@ -138,7 +139,7 @@ nextfig;
     e := 2mm;
 
     p = square_corner_twist_border_UR(W, H, s, g);
-    drawoptions(withpen pencircle scaled e withcolor .7white);
+    drawoptions(withpen pencircle scaled e withcolor shade);
     for i = 0 upto 3:
         draw p shifted (i * (s + g, s + g));
     endfor;
@@ -159,20 +160,16 @@ nextfig;
     st := 24mm; % stagger step size
 
     p := image(
-      drawoptions(withpen pencircle scaled e withcolor .7white);
+      drawoptions(withpen pencircle scaled e withcolor shade);
       draw square_corner_twist_border_UR(W, H, s, g);
       draw rail_horiz(W, H, s, g);
       draw rail_vert(W, H, s, g);
     );
     p := origin_at_LL(p rotated 180);
-    save fillcolor, strokecolor;
-    color fillcolor, strokecolor;
-    fillcolor := white;
-    strokecolor := .7white;
-    hollowstroke(p, e, .5bp);
-    hollowstroke(origin_at_LL(flip_horiz p) shifted (st, st), e, .5bp);
-    hollowstroke(origin_at_LL(flip_vert p) shifted (st, 2st), e, .5bp);
-    hollowstroke(origin_at_LL(p rotated 180) shifted (2st, 3st), e, .5bp);
+    drawhollowed(e, .5bp, white) p;
+    drawhollowed(e, .5bp, white) origin_at_LL(flip_horiz p) shifted (st, st);
+    drawhollowed(e, .5bp, white) origin_at_LL(flip_vert p) shifted (st, 2st);
+    drawhollowed(e, .5bp, white) origin_at_LL(p rotated 180) shifted (2st, 3st);
 endfig;
 
 nextfig;
@@ -189,7 +186,7 @@ nextfig;
     H = h + 2(c + m);
     draw usquare xscaled W yscaled H;
     draw usquare xscaled (W - 2c) yscaled (H - 2c);
-    drawoptions(withpen pencircle scaled e withcolor .7white);
+    drawoptions(withpen pencircle scaled e withcolor shade);
     draw square_corner_twist_border(w, h, s, g);
     % guidelines
     drawoptions(withpen pencircle scaled 1pt withcolor .85white dashed evenly);
@@ -212,7 +209,7 @@ nextfig;
     H = h + 2(c + m);
     draw usquare xscaled W yscaled H;
     draw usquare xscaled (W - 2c) yscaled (H - 2c);
-    drawoptions(withpen pencircle scaled e withcolor .7white);
+    drawoptions(withpen pencircle scaled e withcolor shade);
     draw square_corner_twist_border(w, h, s, g);
 endfig;
 
@@ -232,7 +229,7 @@ nextfig;
     H = h + 2(c + m);
     draw usquare xscaled W yscaled H;
     draw usquare xscaled (W - 2c) yscaled (H - 2c);
-    drawoptions(withpen pencircle scaled e withcolor .7white);
+    drawoptions(withpen pencircle scaled e withcolor shade);
     draw square_corner_twist_border(w, h, s, g);
     %--- Draw "rails" inside the border ---
     % Vertical rails here

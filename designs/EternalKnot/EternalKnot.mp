@@ -103,14 +103,14 @@ taggedfig("OvalFrame");
     H = 14u + bw + 2pad + 2m;
 
     fill ucircle xscaled (W - 2m) yscaled (H - 2m) withcolor .8white;
-    hollowstroke(ucircle xscaled (W-m) yscaled (H-m), m+2ew, m);
+    drawhollowed(m + 2ew, m, white) ucircle xscaled (W-m) yscaled (H-m);
 
     interim linecap := butt;
     for i = 1 step 2 until 17:
-        hollowstroke(seg[i] scaled u, bw + 2ew, bw);
+        drawhollowed(bw + 2ew, bw, white) seg[i] scaled u;
     endfor;
     for i = 2 step 2 until 18:
-        hollowstroke(seg[i] scaled u, bw + 2ew, bw);
+        drawhollowed(bw + 2ew, bw, white) seg[i] scaled u;
     endfor;
 endfig;
 
@@ -131,14 +131,14 @@ taggedfig("DiamondFrame");
     H = 14u + bw + sqrt(2)*(2pad + 2m);
 
     fill udiamond xscaled (W - 2m) yscaled (H - 2m) withcolor .8white;
-    hollowstroke(udiamond xscaled (W-m) yscaled (H-m), m+2ew, m);
+    drawhollowed(m + 2ew, m, white) udiamond xscaled (W-m) yscaled (H-m);
 
     interim linecap := butt;
     for i = 1 step 2 until 17:
-        hollowstroke(seg[i] scaled u, bw + 2ew, bw);
+        drawhollowed(bw + 2ew, bw, white) seg[i] scaled u;
     endfor;
     for i = 2 step 2 until 18:
-        hollowstroke(seg[i] scaled u, bw + 2ew, bw);
+        drawhollowed(bw + 2ew, bw, white) seg[i] scaled u;
     endfor;
 endfig;
 end.
