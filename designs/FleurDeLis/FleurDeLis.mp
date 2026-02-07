@@ -106,26 +106,23 @@ nextfig;
     %--- Now draw all the things ---
 
     % Draw frame
-    fillcolor := white;
-    fillstroke usquare scaled wTot rotated 45;
-    fillcolor := shade;
-    fillstroke usquare scaled (wTot - marg) rotated 45;
-    fillcolor := white;
+    drawfilled(white) usquare scaled wTot rotated 45;
+    drawfilled(shade) usquare scaled (wTot - marg) rotated 45;
 
     % Render middle leaf
-    fillstroke p21;
+    drawfilled(white) p21;
     draw p5;
 
     % Render right & left leaves
-    fillstroke p22;
+    drawfilled(white) p22;
     draw p4;
-    fillstroke flip_horiz(p22);
+    drawfilled(white) flip_horiz(p22);
     draw flip_horiz(p4);
 
     % Render the rings
-    fillstroke p7;
-    fillstroke p8;
-    fillstroke p9;
+    drawfilled(white) p7;
+    drawfilled(white) p8;
+    drawfilled(white) p9;
 
     currentpicture := currentpicture rotated 45;
     center_fig_on_page;

@@ -51,7 +51,7 @@ nextfig;
     corner_motif := origin_at_UR(chip_motif(d, 3, 1));
 
     % Outer edge & chamfer
-    fillstroke(usquare xscaled W yscaled H);
+    drawfilled(shade) petal(usquare xscaled W yscaled H);
     draw usquare xscaled (W - 2c) yscaled (H - 2c);
 
     % Etched troughs
