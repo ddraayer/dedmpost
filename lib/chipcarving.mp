@@ -2,10 +2,11 @@
 %--------------------------------------------------------------
 % chipcarving.mp
 %   Pattern pieces common in chip carving designs
-% Copyright (c) 2025 Dean E. Draayer
+% Copyright (c) 2026 Dean E. Draayer
 %--------------------------------------------------------------
 input dedjobdefaults;
 input dedmpost;
+
 
 %--- notched_edge(g,h) ---
 % Return a line segment with a triangular notch in the middle.
@@ -65,6 +66,32 @@ vardef segmented_oval (expr w, h, n) =
         endfor;
         draw o;
     )
+enddef;
+
+
+%--- divot(l,t) ---
+% Return a cycle for a divot of length l and thickness t.
+% The axis of the divot is (-l/2,0)--(l/2,0).
+vardef divot (expr l,t) =
+    save c,p;
+    numeric c;
+    path p;
+    c := 2; % curl parameter at divot ends
+    p := (-l/2, 0){curl c} .. (0, -t/2) .. {curl c}(l/2, 0);
+    p -- (p rotated 180) -- cycle
+enddef;
+
+%--- divot_chip(P,Q,w) ---
+% Return a cycle for a divot with endpoints P and Q and width w.
+% It includes the axis of the divot [P,Q].
+vardef divot_chip (expr P,Q,w) =
+    save c,n,M;
+    numeric c;
+    pair n,M;
+    c := 2; % curl parameter at divot ends
+    M = 1/2[P,Q];
+    n = w/2 * unitvector (Q - P) rotated 90;
+    P -- Q{curl 2} .. (M + n) .. {curl 2}P -- Q{curl 2} .. (M - n) .. {curl 2}cycle
 enddef;
 
 

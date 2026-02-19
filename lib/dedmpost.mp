@@ -288,12 +288,24 @@ enddef;
 
 %----- SHAPES -----
 
+%--- polygon(n,r) ---
+% Parameters:
+%   n - number of sides
+%   r - radius of the n-gon (from center to vertex)
+% Return a regular n-gon of radius r as a cycle.
+% The starting vertex is at the top (0,r), the center is at the origin.
+vardef polygon(expr n, r) =
+    for i = 0 upto n - 1:
+        (0, r) rotated (360/n * i) -- endfor
+    cycle
+enddef;
+
 %--- rounded_rect(w,h,r) ---
 % Parameters:
 %   w - width of rectangle
 %   h - height of rectangle
 %   r - radius of corners
-% Returns a rounded rectangle of the indicated dimensions as a cycle.
+% Return a rounded rectangle of the indicated dimensions as a cycle.
 vardef rounded_rect (expr w,h,r) =
     save W,H,K;
     path W,H,K;
@@ -402,6 +414,14 @@ taggedfig("OvalWithSpokes");
     for i = 0 upto (length q) - 1:
         draw C -- point i of q;
     endfor;
+endfig;
+
+taggedfig("PolygonsRoundRects");
+    draw rounded_rect(5.5cm, 5.5cm, 2mm);
+    draw rounded_rect(9cm, 6cm, 1cm);
+    draw polygon(3, 1cm);
+    draw polygon(5, 2cm);
+    draw polygon(16, 2.5cm);
 endfig;
 
 taggedfig("DirectionsInOut");
