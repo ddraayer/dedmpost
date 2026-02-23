@@ -60,6 +60,14 @@ vardef taggedfig (expr tag) =
 enddef;
 
 
+%----- FONT/TEXT RENDERING -----
+input TEX;
+% Return a picture with txt rendered in the given font and size
+vardef render_text (expr txt, font, size) =
+    TEX("\font\somefont=" & font & " at " & size & " \somefont " & txt)
+enddef;
+
+
 %----- ORIGIN SHIFTING -----
 % Shift a picture/path/pen (anything with a bounding box) so that the origin is
 % located at one of the bounding box's points of interest (center or any of its
@@ -187,6 +195,9 @@ vardef drawhollowed(expr wd_out, wd_in, fillcolor) expr p =
     draw p withpen pencircle scaled wd_in withcolor fillcolor;
 enddef;
 
+
+% TODO: Eliminate fillstroke, hollowstroke, and supporting stuff.
+% This is being superceded by drawfilled and drawhollowed.
 
 % One very common drawing operation is to fill a closed path with one color and
 % at the same time stroke the path with a different color. In plain MetaPost

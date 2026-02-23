@@ -1,7 +1,7 @@
 %!TEX TS-program = nv-metapost
 %--------------------------------------------------------------
 % FleurDeLis.mp (from 2011-Jan-28)
-% Copyright (c) 2025 Dean E. Draayer
+% Copyright (c) 2026 Dean E. Draayer
 %--------------------------------------------------------------
 input dedjobdefaults;
 input dedmpost;
@@ -22,6 +22,10 @@ nextfig;
     pad := 8mm;
 
     % Establish design unit u
+    % The fleur-de-lis is drawn with axis in vertical orientation. The frame
+    % gets drawn with a diagonal in the vertical orientation - so a diamond
+    % not a square. Finally the whole thing is rotated 45 degrees to get the
+    % frame edges aligned horizontally and vertically (hence the sqrt(2)).
     28u + 2marg + 2pad = sqrt(2)*wTot;
 
     %--- Define the control points and directions ---

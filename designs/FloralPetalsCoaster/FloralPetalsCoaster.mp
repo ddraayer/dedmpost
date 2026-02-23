@@ -34,8 +34,8 @@ enddef;
 %--- FIGURES START HERE ---
 
 nextfig;
-    path petal, arc;
-    picture corner_pic,petalpic,petals_pic,petals_layer;
+    path petal;
+    picture corner_pic,petals_pic,petals_layer;
     numeric W,R,m,g;
 
     W = 100mm;
