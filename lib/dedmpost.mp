@@ -180,6 +180,19 @@ enddef;
 
 %----- FILL & STROKE MACROS -----
 
+%--- currentpen_width ---
+% Return the width of currentpen.
+def currentpen_width =
+    xpart (rt origin - lft origin)
+enddef;
+
+%--- currentpen_height ---
+% Return the height of currentpen.
+def currentpen_height =
+    ypart (top origin - bot origin)
+enddef;
+
+
 %--- drawfilled(c) p ---
 % Fill contour p with color c, then stroke p with currentpen.
 vardef drawfilled(expr c) expr p =
