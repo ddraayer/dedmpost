@@ -127,7 +127,20 @@ ucircle = fullcircle;
 udiamond = (right--up--left--down--cycle) scaled 1/2;
 
 
-%----- DIRECTION-RELATED MACROS -----
+%----- PATH-RELATED MACROS -----
+
+%--- startpoint (p) ---
+% Return the initial point of path p.
+def startpoint primary p =
+    point 0 of p
+enddef;
+
+%--- endpoint (p) ---
+% Return the terminal point of path p.
+def endpoint primary p =
+    point (length p) of p
+enddef;
+
 
 %--- dir_in t of p ---
 % Return a vector pointing in the direction of entry at point t of p.
