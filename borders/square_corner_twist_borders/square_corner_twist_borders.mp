@@ -1,43 +1,12 @@
 %!TEX TS-program = nv-metapost
 %--------------------------------------------------------------
 % square_corner_twist_borders.mp
-% Copyright (c) 2025 Dean E. Draayer
+% Copyright (c) 2026 Dean E. Draayer
 %--------------------------------------------------------------
 input dedjobdefaults;
 input dedmpost;
+input borders;
 
-%--- square_corner_twist(s,g) ---
-% Return a path for the "lower left" twisted square corner:
-%      Q
-%      ◀━━━━━━━┓
-%     g        ┃
-%      ┏━━━━━━━━━━━┓
-%      ┃       ┃   ┃
-%     s┃       ┃   ┃
-%      ┃       ┃   ┃
-%      ┗━━━━━━━┛   ▲P
-%     O    s     g
-%
-%  - s is the length of the sides of the square
-%  - g is the width of the gap between the square and the "handles"
-%  - the corner point is at the origin O
-%  - it starts at point P=(s+g,0) on the x-axis moving upward
-%  - it ends at point Q=(0,s+g) on the y-axis moving leftward
-%
-vardef square_corner_twist (expr s, g) =
-    save P;
-    pair P[];
-
-    P1 = (s + g, 0);
-    P2 = (s + g, s);
-    P3 = (0, s);
-    P4 = (0, 0);
-    P5 = (s, 0);
-    P6 = (s, s + g);
-    P7 = (0, s + g);
-
-    P1 for i = 2 upto 7: -- P[i] endfor
-enddef;
 
 %--- square_corner_twist_border_UR(w,h,s,g) ---
 % Return a path for the upper right quarter of a full border:
