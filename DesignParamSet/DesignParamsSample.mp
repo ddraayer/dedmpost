@@ -10,9 +10,19 @@
 % to yield variations of the same design all rendered as different figures in a
 % single MetaPost source file.
 %
-% The design here is very simple: basically a rectangle with a frame (margin).
+% The design here is very simple: basically a rectangular frame surrounding a
+% 2-D array of circles.
 % But it illustrates typical real cases.
+%
+% Variations:
+%   - 
 %-------------------------------------------------------------------------------
+
+% TODO Examples:
+%   - Give the circles a "substantial" thickness
+%   - Fixed circles - M x N (# reps in each direction) - fixed diameter or fixed padding
+%   - Fixed frame aspect ratio - causing ellipses
+
 input dedjobdefaults;
 input dedmpost;
 
@@ -59,6 +69,12 @@ vardef supply_defaults (suffix D) =
             D.$ = default.$;
         fi;
     endfor;
+    % Report any parameters that are still undetermined
+    forsuffixes $ = scantokens(design_params):
+        if unknown(D.$):
+            message("Parameter " & str D.$ & " is still unknown");
+        fi;
+    endfor;
 enddef;
 
 
@@ -66,13 +82,14 @@ enddef;
 
 nextfig;
     save D;
+    D.aspratio = default.aspratio;
     apply_constraints(D);
     render_design(D);
 endfig;
 
 nextfig;
     save D;
-    D.wTot = 150mm;
+    D.wTot = 150mm = 1.5 D.hTot;
     apply_constraints(D);
     render_design(D);
 endfig;
